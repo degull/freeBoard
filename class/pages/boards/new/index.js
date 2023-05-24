@@ -1,4 +1,3 @@
-import { gql } from '@apollo/client';
 import { 
    Wrapper,
    Title,
@@ -25,7 +24,7 @@ import {
    Error
  } from '../../../styles/emotion.js';
 import React from 'react';
-import { useState } from 'react,';
+import { useState } from 'react';
 import {gql, useMutation} from '@apollo/client'
 
 
@@ -106,24 +105,26 @@ export default function BoardWriteUI(){
       }
       
       if (writer && password && title && contents) {
-         //Backend 통신 API
-         const result = await createBoard({
-            variables : {
-               createBoardInput : {
-                  writer : writer,
-                  password : password,
-                  title : title,
-                  contents : contents
+         try {
+
+            //Backend 통신 API
+            const result = await createBoard({
+               variables : {
+                  createBoardInput : {
+                     writer : writer,
+                     password : password,
+                     title : title,
+                     contents : contents
+                  }
                }
-            }
-         })
+            })
+            console.log(result.data.createBoard._id)
+            router.push(`/boards/${result.data.createBoard._id}`)
+            } catch(error){
+               alert(error.message)
+         }
       }
    }
-
-
-
-
-
 
    return (
       <Wrapper>
